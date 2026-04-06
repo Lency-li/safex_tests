@@ -13,7 +13,6 @@ class TestCreateMessage:
         self.view_page = ViewMessagePage(browser)
         self.create_page.open()
         self.generator = test_data
-        yield
 
 
     @allure.title("Page Loading")

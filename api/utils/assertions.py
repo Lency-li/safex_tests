@@ -8,7 +8,7 @@ def assert_status_code(
     response: requests.Response,
     expected: int,
     message: Optional[str] = None
-):
+) -> None:
     if response.status_code != expected:
         error_msg = message or (
             f"Expected {expected}, got {response.status_code}\n"
@@ -39,5 +39,5 @@ def assert_secret_created(
 def assert_error_response(
     response: requests.Response,
     expected_status: int = HTTPStatus.BAD_REQUEST.value
-):
+) -> None:
     assert_status_code(response, expected_status)
