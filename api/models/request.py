@@ -13,10 +13,10 @@ class SecretRequest:
     pin: Optional[str] = None
     metadata: Optional[Dict[str, Any]] = None
     
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self._validate()
     
-    def _validate(self):
+    def _validate(self) -> None:
         if self.ttl <= 0:
             raise ValueError(f"TTL must be positive, got {self.ttl}")
         

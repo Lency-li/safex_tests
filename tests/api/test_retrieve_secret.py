@@ -38,7 +38,7 @@ class TestRetrieveSecret:
         
         secret_id = extract_secret_id_from_link(secret.link)
         
-        for i in range(3):
+        for _ in range(3):
             response = secret_client.get_secret_success(secret_id)
             assert response.status_code == HTTPStatus.OK.value
     

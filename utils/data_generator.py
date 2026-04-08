@@ -3,7 +3,7 @@ import tempfile
 import os
 import random
 import uuid
-from typing import Optional, Tuple, Union
+from typing import Optional, Union
 
 
 class FakerGenerator:
@@ -18,7 +18,8 @@ class FakerGenerator:
             'multiline': lambda: '\n'.join(self.fake.sentences(random.randint(2, 5))),
         }
         
-        return variants.get(variant, variants['medium'])()
+        return variants[variant]()
+
     
     def pin(self, digits: int = 6) -> str:
         if digits < 4 or digits > 8:
@@ -66,7 +67,7 @@ class FakerGenerator:
     def file_content_for_api(self, size: int = 1024) -> bytes:
         return bytes([random.randint(0, 255) for _ in range(size)])  
     
-    def cleanup(self, *file_paths):
+    def cleanup_files(self, *file_paths):
         for file_path in file_paths:
             try:
                 if os.path.exists(file_path):

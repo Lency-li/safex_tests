@@ -1,5 +1,6 @@
 from typing import Tuple, Optional
 from .base_client import BaseClient
+import requests
 import time
 
 class OpaqueClient(BaseClient):
@@ -35,7 +36,7 @@ class OpaqueClient(BaseClient):
         self, 
         request_data: Optional[dict] = None,
         expected_status: int = 400
-    ):
+    ) -> requests.Response:
         payload = request_data or {}
         response = self.post_json(self.REGISTER_START, payload)
         

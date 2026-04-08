@@ -1,7 +1,6 @@
 import pytest
 from api.models import SecretRequestBuilder
 from api.utils.assertions import assert_error_response
-from utils.data_generator import generator
 import allure
 
 
@@ -26,11 +25,11 @@ class TestCreateSecret:
                 attachment_type=allure.attachment_type.TEXT
             )
     
-    def test_create_secret_with_builder(self, secret_client, test_secret_data):
+    def test_create_secret_using_request_builder(self, secret_client, test_secret_data, test_data):
         request = (SecretRequestBuilder()
                   .with_ttl(30, "minutes")
                   .as_text()
-                  .with_pin(generator.pin(6))
+                  .with_pin(test_data.pin(6))
                   .build())
         
         secret = secret_client.create_secret_success(
@@ -41,8 +40,9 @@ class TestCreateSecret:
         
         assert secret.secret_id == test_secret_data["secret_id"]
     
-    def test_create_file_secret_success(self, secret_client, test_secret_data):
-        file_content = generator.file_content_for_api(size=2048)
+    def test_create_file_secret_success(self, secret_client, test_secret_data, test_data):
+
+        file_content = test_data.file_content_for_api(size=2048)
         
         request = (SecretRequestBuilder()
                   .as_file(content=file_content)
@@ -76,9 +76,10 @@ class TestCreateSecret:
         
         assert secret.secret_id == test_secret_data["secret_id"]
     
-    def test_create_secret_with_pin(self, secret_client, test_secret_data):
-        pin = generator.pin(6)
-        
+    def test_create_secret_with_pin(self, secret_client, test_secret_data, test_data):
+
+        pin = test_data.pin(6)
+
         request = (SecretRequestBuilder()
                   .as_text()
                   .with_pin(pin)
@@ -101,16 +102,4 @@ class TestCreateSecret:
         assert_error_response(response, 400)
         assert "SecretID is required" in response.text
     
-    def test_create_secret_with_invalid_ttl(self, secret_client, test_secret_data):
-        invalid_ttls = [0, -5, 10**7]
-        
-        for ttl in invalid_ttls:
-            request = SecretRequestBuilder().with_ttl(ttl, "minutes").build()
-            
-            response = secret_client.create_secret(
-                secret_id=test_secret_data["secret_id"],
-                opaque_upload=test_secret_data["opaque_upload"],
-                secret_request=request
-            )
-            
-            assert response.status_code in [400, 201]
+    

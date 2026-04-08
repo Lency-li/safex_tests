@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import Optional, Dict, Any
 import re
 from datetime import datetime
-from config import Config
 
 @dataclass
 class Secret:

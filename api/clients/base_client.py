@@ -3,11 +3,9 @@ from typing import Dict, Any
 
 
 class BaseClient:
-    def __init__(self, base_url: str, suppress_logs: bool = True):
+    def __init__(self, base_url: str) -> None:
         self.base_url = base_url.rstrip('/')
-        self.suppress_logs = suppress_logs
         self.session = requests.Session()
-        
         self.session.headers.update({
             'User-Agent': 'API-Tests/1.0',
             'Accept': 'application/json, text/html, */*',
@@ -35,5 +33,5 @@ class BaseClient:
     def post_multipart(self, path: str, files: Dict[str, tuple], **kwargs) -> requests.Response:
         return self.post(path, files=files, **kwargs)
     
-    def close(self):
+    def close(self) -> None:
         self.session.close()
