@@ -1,11 +1,12 @@
 from .base_page import BasePage
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from utils.locators import Locators
 from config import Config
-from typing import Optional, Union, Any
+from typing import Optional, Union
 
 
 
@@ -29,10 +30,10 @@ class CreateMessagePage(BasePage):
     def is_file_zone_enabled(self, timeout=5) -> bool:
         return self.is_visible(self.locators.FILE_LABEL, timeout)
     
-    def set_text(self, text) -> Any:
+    def set_text(self, text) -> WebElement:
         return self.enter_text(self.locators.TEXT_AREA, text)
     
-    def set_pin(self, pin) -> Any:
+    def set_pin(self, pin) -> WebElement:
         return self.enter_text(self.locators.PIN_INPUT, str(pin))
     
     def set_duration(self, index=0) -> "CreateMessagePage":
@@ -47,7 +48,7 @@ class CreateMessagePage(BasePage):
         select.select_by_value(value)
         return self
     
-    def set_ttl(self, ttl=15) -> Any:
+    def set_ttl(self, ttl=15) -> WebElement:
         return self.enter_text(self.locators.EXPIRY_VALUE, str(ttl))
     
     def activate_file_upload(self) -> "CreateMessagePage":

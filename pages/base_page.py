@@ -1,4 +1,5 @@
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, NoAlertPresentException
@@ -15,15 +16,15 @@ class BasePage:
     def open_url(self, url: str) -> None:
         self.browser.get(url)
 
-    def find(self, locator: Tuple[str, str], timeout: Optional[int] = None) -> Any:
+    def find(self, locator: Tuple[str, str], timeout: Optional[int] = None) -> WebElement:
         wait = self.wait if timeout is None else WebDriverWait(self.browser, timeout)
         return wait.until(EC.visibility_of_element_located(locator))
 
-    def find_clickable(self, locator: Tuple[str, str], timeout: Optional[int] = None) -> Any:
+    def find_clickable(self, locator: Tuple[str, str], timeout: Optional[int] = None) -> WebElement:
         wait = self.wait if timeout is None else WebDriverWait(self.browser, timeout)
         return wait.until(EC.element_to_be_clickable(locator))
 
-    def click(self, locator: Tuple[str, str], timeout: Optional[int] = None) -> Any:
+    def click(self, locator: Tuple[str, str], timeout: Optional[int] = None) -> WebElement:
         element = self.find_clickable(locator, timeout)
         element.click()
         return element
@@ -43,7 +44,7 @@ class BasePage:
         except TimeoutException:
             return False
 
-    def enter_text(self, locator: Tuple[str, str], text: str, clear_first: bool = True) -> Any:
+    def enter_text(self, locator: Tuple[str, str], text: str, clear_first: bool = True) -> WebElement:
         element = self.find(locator)
         if clear_first:
             element.clear()
