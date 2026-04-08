@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, NoAlertPresentException
 from selenium.webdriver.common.action_chains import ActionChains
-from typing import Tuple, Any, Optional
+from typing import Tuple, Optional
 from config import Config
 
 class BasePage:
