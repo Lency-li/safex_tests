@@ -1,5 +1,5 @@
 import os
-
+from pathlib import Path
 
 class Config:
 
@@ -16,6 +16,10 @@ class Config:
     BROWSER_WIDTH = int(os.getenv("BROWSER_WIDTH", "1920"))
     BROWSER_HEIGHT = int(os.getenv("BROWSER_HEIGHT", "1080"))
 
+    #LOGGING
+    LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+    LOG_DIR = Path(__file__).parent / "logs"
+    LOG_FILE = LOG_DIR / "test_run.log"
 
     
     @classmethod

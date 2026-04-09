@@ -47,8 +47,10 @@ services:
       - API_BASE_URL=http://api:8080
       - HEADLESS=true
       - DEFAULT_TIMEOUT=10
+      - LOG_LEVEL=INFO
     volumes:
       - ./allure-results:/app/allure-results  
+      - ./logs:/app/logs
     networks:
       - test-network
     command: >

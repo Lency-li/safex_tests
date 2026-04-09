@@ -1,10 +1,15 @@
 import pytest
+import logging
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from config import Config
 
+
+logger = logging.getLogger(__name__)
+
 @pytest.fixture(scope='session')
 def browser():
+    logger.info("Starting browser session")
     options = Options()
     if Config.HEADLESS:
         options.add_argument("--headless")
@@ -17,7 +22,8 @@ def browser():
 
     yield chrome_browser
     chrome_browser.quit()
-
+    logger.info("Browser session closed")
+    
 
 @pytest.fixture
 def base_url():

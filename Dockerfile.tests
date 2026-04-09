@@ -28,8 +28,11 @@ RUN pip install poetry && \
     poetry config virtualenvs.create false && \
     poetry install --no-interaction --no-ansi --no-root
 
+RUN mkdir -p /app/logs
+
 COPY . .
 
+ENV LOG_LEVEL=INFO
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
 
