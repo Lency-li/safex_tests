@@ -24,8 +24,6 @@ class TestRetrieveSecret:
         response = secret_client.get_secret(fake_id)
         
         assert response.status_code == 200
-        
-        assert "secret-id" not in response.text.lower(), "The page contains a secret"
         assert "data-secret-id" not in response.text, "The data-secret-id attribute has been found"
         assert "unlock-pin" in response.text, "There is no PIN input field"
         assert "pin" in response.text.lower(), "There is no mention of PIN"

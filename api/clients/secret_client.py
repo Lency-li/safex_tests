@@ -23,31 +23,29 @@ class SecretClient(BaseClient):
         
         return self.post_multipart(self.SECRETS_ENDPOINT, files, **kwargs)
     
-    def create_secret_success(
-        self,
-        secret_id: str,
-        opaque_upload: str,
-        secret_request: Optional[SecretRequest] = None,
-        **kwargs
-    ) -> Secret:
+    def create_secret_success(self, secret_id: str, opaque_upload: str,
+                              secret_request: Optional[SecretRequest] = None, **kwargs) -> Secret:
         response = self.create_secret(secret_id, opaque_upload, secret_request, **kwargs)
-        
+
         if response.status_code != HTTPStatus.CREATED.value:
-            raise AssertionError(
-                f"Expected 201, got {response.status_code}: {response.text[:200]}"
-            )
+            self.logger.error(f"Secret creation failed: {response.status_code} - {response.text[:200]}")
+
+            raise AssertionError(f"Expected 201, got {response.status_code}")
         
-        return Secret.from_response(response, self.base_url)
+        secret = Secret.from_response(response)
+        self.logger.info(f"Secret created: id={secret.short_id}, link={secret.link}")
+        return secret
     
     def get_secret(self, secret_id: str) -> requests.Response:
         return self.get(f"{self.SECRETS_ENDPOINT}/{secret_id}")
     
     def get_secret_success(self, secret_id: str) -> requests.Response:
         response = self.get_secret(secret_id)
-        
+
         if response.status_code != HTTPStatus.OK.value:
-            raise AssertionError(
-                f"Expected 200, got {response.status_code}"
-            )
-        
+            self.logger.error(f"Failed to get secret {secret_id}: {response.status_code}")
+            
+            raise AssertionError(f"Expected 200, got {response.status_code}")
+        self.logger.debug(f"Secret {secret_id} retrieved successfully")
+
         return response
